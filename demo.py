@@ -1,11 +1,7 @@
-from us_visa.logger import logging
+import os
+from dotenv import load_dotenv
 
-logging.info("Testing custom logger")
+load_dotenv()
 
-from us_visa.exception import USvisaException
-import sys
-
-try:
-    2/0
-except Exception as e:
-    raise USvisaException(e, sys)
+mongodb_url = os.getenv("MONGODB_URL")
+print(mongodb_url)
