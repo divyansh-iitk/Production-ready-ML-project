@@ -1,7 +1,5 @@
-import os
-from dotenv import load_dotenv
+from us_visa.pipline.training_pipeline import TrainPipeline
 
-load_dotenv()
+train_pipeline = TrainPipeline()
 
-mongodb_url = os.getenv("MONGODB_URL")
-print(mongodb_url)
+train_pipeline.run_pipeline()
