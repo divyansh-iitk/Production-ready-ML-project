@@ -19,7 +19,7 @@ MODEL_FILE_NAME = "model.pkl"
 
 TARGET_COLUMN = "case_status"
 CURRENT_YEAR = date.today().year
-PREPROCSSING_OBJECT_FILE_NAME = "preprocessing.pkl"
+PREPROCESSING_OBJECT_FILE_NAME = "preprocessing.pkl"
 SCHEMA_FILE_PATH = os.path.join("config", "schema.yaml")
 
 

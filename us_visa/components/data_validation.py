@@ -2,8 +2,8 @@ import json
 import sys
 
 import pandas as pd
-from evidently.model_profile import Profile
-from evidently.model_profile.sections import DataDriftProfileSection
+from evidently.report import Report
+from evidently.metric_preset import DataDriftPreset
 
 from pandas import DataFrame
 
@@ -90,20 +90,29 @@ class DataValidation:
         On Failure  :   Write an exception log and then raise an exception
         """
         try:
-            data_drift_profile = Profile(sections=[DataDriftProfileSection()])
+            data_drift_report = Report(metrics=[DataDriftPreset()])
 
-            data_drift_profile.calculate(reference_df, current_df)
+            data_drift_report.run(reference_data=reference_df, current_data=current_df)
 
-            report = data_drift_profile.json()
-            json_report = json.loads(report)
+            report = data_drift_report.as_dict()
 
-            write_yaml_file(file_path=self.data_validation_config.drift_report_file_path, content=json_report)
+            write_yaml_file(file_path=self.data_validation_config.drift_report_file_path, content=report)
 
-            n_features = json_report["data_drift"]["data"]["metrics"]["n_features"]
-            n_drifted_features = json_report["data_drift"]["data"]["metrics"]["n_drifted_features"]
+            # Extract drift metrics from the report
+            dataset_drift_metric = None
+            for metric in report["metrics"]:
+                if metric["metric"] == "DatasetDriftMetric":
+                    dataset_drift_metric = metric["result"]
+                    break
+
+            if dataset_drift_metric is None:
+                raise Exception("DatasetDriftMetric not found in drift report")
+
+            n_features = dataset_drift_metric["number_of_columns"]
+            n_drifted_features = dataset_drift_metric["number_of_drifted_columns"]
 
             logging.info(f"{n_drifted_features}/{n_features} drift detected.")
-            drift_status = json_report["data_drift"]["data"]["metrics"]["dataset_drift"]
+            drift_status = dataset_drift_metric["dataset_drift"]
             return drift_status
         except Exception as e:
             raise USvisaException(e, sys) from e

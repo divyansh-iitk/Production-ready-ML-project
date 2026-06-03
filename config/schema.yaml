@@ -7,7 +7,7 @@ columns:
   - no_of_employees: int
   - yr_of_estab: int
   - region_of_employment: category
-  - prevailing_wage: int
+  - prevailing_wage: float
   - unit_of_wage: category
   - full_time_position: category
   - case_status: category

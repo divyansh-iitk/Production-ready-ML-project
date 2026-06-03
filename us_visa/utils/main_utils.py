@@ -51,7 +51,7 @@ def load_object(file_path: str) -> object:
     
 
 
-def save_numpy_array_data(file_path: str, array: np.array):
+def save_numpy_array_data(file_path: str, array: np.ndarray):
     """
     Save numpy array data to file
     file_path: str location of file to save
@@ -68,7 +68,7 @@ def save_numpy_array_data(file_path: str, array: np.array):
 
 
 
-def load_numpy_array_data(file_path: str) -> np.array:
+def load_numpy_array_data(file_path: str) -> np.ndarray:
     """
     load numpy array data from file
     file_path: str location of file to load
@@ -108,7 +108,7 @@ def drop_columns(df: DataFrame, cols: list)-> DataFrame:
     logging.info("Entered drop_columns methon of utils")
 
     try:
-        df = df.drop(columns=cols, axis=1)
+        df = df.drop(columns=cols)
 
         logging.info("Exited the drop_columns method of utils")
         

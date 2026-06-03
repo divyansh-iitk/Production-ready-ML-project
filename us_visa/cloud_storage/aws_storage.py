@@ -1,4 +1,3 @@
-import boto3
 from us_visa.configuration.aws_connection import S3Client
 from io import StringIO
 from typing import Union,List
@@ -94,7 +93,7 @@ class SimpleStorageService:
         try:
             bucket = self.get_bucket(bucket_name)
 
-            file_objects = [file_object for file_object in bucket.objects.filter(Prefix=filename)]
+            file_objects = [file_object for file_object in bucket.objects.filter(Prefix=filename) if file_object.key == filename]
 
             func = lambda x: x[0] if len(x) == 1 else x
 
